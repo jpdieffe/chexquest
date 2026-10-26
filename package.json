@@ -1,0 +1,20 @@
+{
+  "name": "chexquest-together",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node scripts/serve.mjs",
+    "prepare:vendor": "node scripts/vendor.mjs",
+    "check": "node scripts/check.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "test:browser": "node tests/browser.mjs",
+    "test:network": "node tests/network.mjs",
+    "test:transitions": "node tests/transitions.mjs",
+    "test:levels": "node tests/levels.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.56.1",
+    "emulators": "8.5.2",
+    "peerjs": "1.5.5"
+  }
+}
