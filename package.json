@@ -10,7 +10,8 @@
     "test:browser": "node tests/browser.mjs",
     "test:network": "node tests/network.mjs",
     "test:transitions": "node tests/transitions.mjs",
-    "test:levels": "node tests/levels.mjs"
+    "test:levels": "node tests/levels.mjs",
+    "test:audio": "node tests/audio.mjs"
   },
   "devDependencies": {
     "@playwright/test": "1.56.1",

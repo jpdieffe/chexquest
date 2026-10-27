@@ -67,6 +67,7 @@ Open http://127.0.0.1:4175. The build copies pinned runtime dependencies and cre
 npm run check
 npm test
 npm run test:browser
+npm run test:audio
 npm run test:network
 npm run test:levels
 npm run test:transitions
@@ -83,3 +84,11 @@ Tests cover original-file preservation, map patch integrity, protocol validation
 - Melodic Spaceship documented [the original CHEX.EXE multiplayer mode and result-screen issue](https://www.chexquest.org/index.php?topic=5937.0). This project's compatibility PWAD is generated independently from the supplied game files.
 
 Browser integration and patch-generation code: GPL-2.0; see `LICENSE`.
+
+## Browser audio
+
+The pinned emulator emits mono Float32 PCM. One input sample is one audio frame; it must not be split into alternating stereo channels. `audio.js` sends complete chunks to one persistent AudioWorklet rather than creating a short-lived stereo source for every chunk. Device-rate conversion preserves the original pitch.
+
+Chex Quest starts playback with 180 ms of queued audio. The overlap/add queue adapts to emulator timing drift without changing pitch and smooths a restart after a genuine interruption. The implementation is adapted from the GPL-2.0 audio worklet in emulators 8.5.2 (`src/dos/dosbox/ts/audio-worklet.ts`); attribution is retained in `site/pcm-queue.js`. A mono scheduled-buffer fallback handles browsers without AudioWorklet. Mute uses a gain control; suspending/closing discards stale buffers.
+
+`npm run test:audio` runs the original game in a phone-sized Chrome viewport with 4x CPU throttling and deliberate 90 ms UI delays. It checks PCM delivery, queue underruns/overflows, mute and cleanup using counters, so working speakers or sound drivers are unnecessary. Unit tests verify duration and pitch at 44.1/48 kHz and sustained clock drift. Set `GAME_URL` to the deployed URL to run the same browser check against GitHub Pages.
